@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import authService from "../appwrite/AuthService";
+import authService from "../appwrite/AuthService.js";
 import { Input,Logo,Button } from "./initial.js";
-import { login } from "../store/auth";
+import { login } from "../store/auth.js";
 
 export const Signup = ()=>{
   const dispatch = useDispatch()
