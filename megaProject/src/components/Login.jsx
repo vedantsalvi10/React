@@ -4,27 +4,28 @@ import { Link, useNavigate } from "react-router-dom";
 import authService from "../appwrite/AuthService";
 import { Button, Logo, Input} from "./initial.js";
 import {useForm} from "react-hook-form"
+import { login as authLogin } from "../store/auth.js";
+
+
 export const Login = () =>{
  const navigate = useNavigate();
  const dispatch = useDispatch();
  const{register, handleSubmit} = useForm();
  const [error,setError] = useState("");
 
- const login = async (data)=>{
+ const login = async (data) => {
   setError("");
-  try{
-    const session = await authService.logIN(data);
-    if(session){
-      const UserData = await authService.checkAccount();  
-      if(UserData) dispatch(login(UserData));
-        navigate("/");
+  try {
+    const session = await authService.logIN(data)
+    if (session) {
+        const userData = await authService.getCurrentUser()
+        if(userData) dispatch(authLogin(userData));
+        navigate("/")
     }
-  }catch(error){
+} catch (error) {
     setError(error.message)
-  }
-  
- }
-
+}
+};
  return(
   <div
   className='flex items-center justify-center w-full'
@@ -59,8 +60,9 @@ export const Login = () =>{
           {
             required:true,
             validate: {
-              matchPattern: (valid)=> /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(valid)  || "Enter valid EmailID"
+              matchPattern: (valid) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(valid) || "Enter a valid Email ID"
             }
+            
           }
         )}
         />

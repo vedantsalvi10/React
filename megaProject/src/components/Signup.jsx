@@ -74,7 +74,7 @@ export const Signup = ()=>{
                       required:true
                      })}
                      />
-                     <Button ttype="submit" className="w-full">
+                     <Button type="submit" className="w-full">
                       Sign up
                      </Button>
                   </div>

@@ -13,11 +13,11 @@ useEffect(()=>{
 authService.checkAccount().then(
   (userData)=>{
     if(userData){
-       dispatch(login(userData));
+       dispatch(login({userData}));
     }else{
       dispatch(logout());
     }
-}).finally(
+}).finally(()=>
   setLoading(false)
   );
 },[])
@@ -26,7 +26,7 @@ return !loading ? (
   <div>
     <Header />
     <main>
-     Todo: {/* <Outlet /> */}
+     <Outlet />
     </main>
     <Footer />
   </div>

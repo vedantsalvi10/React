@@ -1,21 +1,25 @@
 import {conf} from "../conf/conf.js";
 import { Client, Databases, ID, Query, Storage } from "appwrite";
+import authService from "../appwrite/AuthService"; 
 
 export class Service {
  client = new Client()
  database;
  storage;
  constructor (){
-  this.client.setEndpoint(conf.appwrite_url)
-  .setProject(conf.appwrite_Project_ID);
-  database = new Databases(this.client);
-  storage = new Storage(this.client);
- }
+  this.client
+    .setEndpoint(conf.appwrite_url)
+    .setProject(conf.appwrite_Project_ID);
+
+  this.database = new Databases(this.client);
+  this.storage = new Storage(this.client);    
+}
+
  async addData({tittle,slug,content,image,status,userID}){
    try{
      return await this.database.createDocument(
       conf.appwrite_Database,
-      appwrite_Collection,
+      conf.appwrite_Collection,
       slug,
       {
         tittle,
@@ -72,20 +76,26 @@ async getPost(slug){
     return false;
   }
 }
-async viewPost(query = [Query.equal('status','active')]){
-try{
- return await this.database.listDocuments(
+async viewPost(query = [Query.equal('status', 'active')]) {
+  try {
+    const user = await authService.checkAccount();
+    if (!user) {
+      console.warn("❌ Cannot fetch posts. User is not logged in.");
+      return false; // Prevent unauthorized request
+    }
+
+    return await this.database.listDocuments(
       conf.appwrite_Database,
       conf.appwrite_Collection,
-      query,
-      100,
-      0
- )
-}catch(error){
-  console.log("APPWRITEERROR :: GETPOST ERROR :: ",error);
+      query
+    );
+  } catch (error) {
+    console.error("❌ APPWRITE ERROR :: GETPOST ERROR ::", error);
     return false;
+  }
 }
-}
+
+
 async uploadFile(file){
   try{
    return await this.storage.createFile(

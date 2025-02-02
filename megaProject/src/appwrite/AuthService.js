@@ -1,10 +1,16 @@
 import { conf } from "../conf/conf.js";
 import { Client, Account, ID } from "appwrite";
 
+console.log("Appwrite URL: ", conf.appwrite_url); 
+
+if (!conf.appwrite_url) {
+  throw new Error("Appwrite URL is undefined! Check your .env file.");
+}
 export class AuthService {
   client;
   account;
 
+ 
   constructor() {
     this.client = new Client();
     this.client
@@ -28,20 +34,41 @@ export class AuthService {
 
   async logIN({ email, password }) {
     try {
-      return await this.account.createEmailPasswordSession(email, password);
+      console.log("🔹 Logging in...");
+      const session = await this.account.createEmailPasswordSession(email, password);
+      console.log("✅ Login successful:", session);
+      
+      const user = await this.checkAccount();
+      if (!user) {
+        console.warn("❌ User data not found after login.");
+        return null;
+      }
+  
+      return user;
     } catch (error) {
-      console.log("ERROR :: LOGINERROR ::", error);
+      console.error("❌ ERROR :: LOGIN ERROR ::", error);
+      return null;
     }
   }
+  
 
   async checkAccount() {
     try {
-      return await this.account.get();
+      console.log("🔹 Checking user session...");
+      const user = await this.account.get();
+      console.log("✅ User Data:", user);
+      return user;
     } catch (error) {
-      console.log("ERROR :: CHECKACCOUNT :: ", error);
+      if (error.code === 401) {
+        console.warn("❌ User is not logged in! Redirecting to login page...");
+        return null; // Prevents app crash
+      }
+      console.error("❌ ERROR :: CHECKACCOUNT :: ", error);
+      return null;
     }
   }
-
+  
+  
   async logOUT() {
     try {
       return await this.account.deleteSessions();
