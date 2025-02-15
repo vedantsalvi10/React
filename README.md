@@ -20,4 +20,4 @@
   <li>One-click copy button to copy the generated password to the clipboard</li>
 </ul>
 <img src = "./images/passGenerator1.png"/>
-<img src = ""/>
+<img src = "./images/passGenerator2.png"/>
