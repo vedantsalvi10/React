@@ -24,9 +24,11 @@ function Select(
         >
          {
           options?.map((option)=>{
-            <option key={option} value={option}>
+          return(
+           <option key={option} value={option}>
                {option}
             </option>
+          )
           })
          }
         </select>

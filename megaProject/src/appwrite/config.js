@@ -76,14 +76,8 @@ async getPost(slug){
     return false;
   }
 }
-async viewPost(query = [Query.equal('status', 'active')]) {
+async viewPost(query = [Query.equal("status", "active")]) {
   try {
-    const user = await authService.checkAccount();
-    if (!user) {
-      console.warn("❌ Cannot fetch posts. User is not logged in.");
-      return false; // Prevent unauthorized request
-    }
-
     return await this.database.listDocuments(
       conf.appwrite_Database,
       conf.appwrite_Collection,
@@ -91,9 +85,10 @@ async viewPost(query = [Query.equal('status', 'active')]) {
     );
   } catch (error) {
     console.error("❌ APPWRITE ERROR :: GETPOST ERROR ::", error);
-    return false;
+    return { documents: [] }; // ✅ Prevents crashes
   }
 }
+
 
 
 async uploadFile(file){
@@ -120,9 +115,9 @@ async deleteFile(fileID){
     return false;
   }
 }
-filePreview(fileID){
-  conf.appwrite_Bucket,
-  fileID
+filePreview(fileID) {
+  if (!fileID) return "https://via.placeholder.com/150"; // ✅ Default placeholder if missing
+  return `${conf.appwrite_url}/storage/buckets/${conf.appwrite_Bucket}/files/${fileID}/preview?project=${conf.appwrite_Project_ID}`;
 }
 }
 

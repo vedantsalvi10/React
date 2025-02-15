@@ -18,7 +18,7 @@ export const Login = () =>{
   try {
     const session = await authService.logIN(data)
     if (session) {
-        const userData = await authService.getCurrentUser()
+        const userData = await authService.checkAccount()
         if(userData) dispatch(authLogin(userData));
         navigate("/")
     }

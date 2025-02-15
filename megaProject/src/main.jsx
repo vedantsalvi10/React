@@ -29,44 +29,44 @@ const router = createBrowserRouter(
           {
               path: "/login",
               element: (
-                  <Protected authentication={false}>
+                //   <Protected authentication={false}>
                       <Login />
-                  </Protected>
+                //   </Protected>
               ),
           },
           {
               path: "/signup",
               element: (
-                  <Protected authentication={false}>
+                //   <Protected authentication={false}>
                       <Signup />
-                  </Protected>
+                //   </Protected>
               ),
           },
           {
               path: "/all-posts",
               element: (
-                  <Protected authentication>
-                      {" "}
+                //   <Protected authentication>
+                    //   {" "}
                       <AllPosts />
-                  </Protected>
+                //   </Protected>
               ),
           },
           {
               path: "/add-post",
               element: (
-                  <Protected authentication>
-                      {" "}
+                //   <Protected authentication>
+                //       {" "}
                       <AddPost />
-                  </Protected>
+                //   </Protected>
               ),
           },
           {
               path: "/edit-post/:slug",
               element: (
-                  <Protected authentication>
-                      {" "}
+                //   <Protected authentication>
+                    //   {" "}
                       <EditPost />
-                  </Protected>
+                //   </Protected>
               ),
           },
           {

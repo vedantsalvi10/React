@@ -2,8 +2,11 @@ import React from "react";
 import {Editor} from "@tinymce/tinymce-react"
 import { Controller } from "react-hook-form";
 
-export const RTE = (name, control, label,  defaultValues ="")=>{
-  
+export const RTE = ({name, control, label,  defaultValues =""})=>{
+  if (!control) {
+    console.error(`🚨 Missing 'control' for RTE component: ${name}`);
+    return null; // Prevents app from breaking
+  }
   return(
     <div className='w-full'>
       {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
@@ -12,9 +15,9 @@ export const RTE = (name, control, label,  defaultValues ="")=>{
        control={control}
        render = {({ field: {onChange} })=>(
         <Editor 
+        apiKey="6kt0ps42kewdjrhz98eps5be0aaiwmi7tp8cdvpycgpeqple"
          initialValue={defaultValues}
          init={{
-          initialValue: defaultValues,
           height:500,
           menubar: true,
           plugins: [

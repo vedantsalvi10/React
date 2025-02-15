@@ -10,7 +10,8 @@ export const PostForm = ({post})=>{
   const navigate = useNavigate()
   const userData = useSelector(state => state.auth.userData)
   const {register, handleSubmit, watch, setValue, control, getValues } = useForm({
-    defaultValue: {
+    mode: "onChange",
+    defaultValues: {
        tittle: post?.tittle || "",
        content: post?.content || "",
        slug: post?.$id ||"",
@@ -21,7 +22,8 @@ export const PostForm = ({post})=>{
   const submit = async (data)=>{
     if(post){
       // update post
-       const file = await data.image[0]? appwriteService.uploadFile(data.image[0]) : null;
+      const file = data.image && data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+
        
        if(file) appwriteService.deleteFile(post.image);
 
@@ -52,9 +54,10 @@ export const PostForm = ({post})=>{
 
 React.useEffect(() => {
     const subscription = watch((value, { name }) => {
-        if (name === "title") {
-            setValue("slug", slugTransform(value.title), { shouldValidate: true });
-        }
+        if (name === "tittle" && value) {
+            setValue("slug", slugTransform(value), { shouldValidate: true });
+          }
+          
     });
 
     return () => subscription.unsubscribe();
@@ -67,7 +70,7 @@ return(
                 label="Title :"
                 placeholder="Title"
                 className="mb-4"
-                {...register("title", { required: true })}
+                {...register("tittle", { required: true })}
             />
             <Input
                 label="Slug :"
@@ -88,15 +91,16 @@ return(
                 accept="image/png, image/jpg, image/jpeg, image/gif"
                 {...register("image", { required: !post })}
             />
-            {post && (
-                <div className="w-full mb-4">
-                    <img
-                        src={appwriteService.filePreview(post.image)}
-                        alt={post.title}
-                        className="rounded-lg"
-                    />
-                </div>
-            )}
+            {post?.image && (
+               <div className="w-full mb-4">
+               <img
+               src={appwriteService.filePreview(post.image)}
+               alt={post.title || "Uploaded Image"}
+                className="rounded-lg"
+                />
+                  </div>
+                 )}
+
             <Select
                 options={["active", "inactive"]}
                 label="Status"
