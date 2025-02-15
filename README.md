@@ -21,3 +21,21 @@
 </ul>
 <img src = "./images/passGenerator1.png"/>
 <img src = "./images/passGenerator2.png"/>
+<hr />
+<br />
+<h3>💱 Currency Converter</h3>
+
+<p>This project utilizes a <strong>Currency API</strong> to fetch real-time exchange rates and convert values between different currencies. It is built with reusable components and optimized with React hooks.</p>
+
+<h4>🚀 Key Features:</h4>
+<ul>
+  <li>Implemented modular and reusable <strong>React components</strong></li>
+  <li>Fetched live exchange rates using a <strong>Currency API</strong></li>
+  <li>Created <strong>custom hooks</strong> for better state management and reusability</li>
+  <li>Used <code>useState</code> for dynamic state updates</li>
+  <li>Optimized rendering with <code>useEffect</code> and <code>useCallback</code></li>
+</ul>
+<img src = "./images/currencyConv1.png"/>
+<img src = "./images/currencyConv1.png"/>
+<hr />
+<br />
